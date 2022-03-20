@@ -8,4 +8,4 @@ How to run / play ?
 3. Choose a number as you wish.
 4. And there you go, start to guess the secret word. 
 
-Hope you will all enjoy (:
+Hope you'll enjoy (:
