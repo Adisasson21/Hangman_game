@@ -1,0 +1,215 @@
+import collections
+hangman_art = """
+ _    _  
+| |  | |
+| |__| | __ _ _ __   __ _ _ __ ___   __ _ _ __ 
+|  __  |/ _' | '_ \ / _' | '_ ' _ \ / _' | '_ \ 
+| |  | | (_| | | | | (_| | | | | | | (_| | | | | 
+|_|  |_|\__,_|_| |_|\__, |_| |_| |_|\__,_|_| |_|  
+                     __/ |            
+                    |___/     """
+
+
+HANGMAN_PHOTOS = {"picture1": """
+x-------x
+""",
+                  "picture2": """ 
+x-------x
+|
+|
+|
+|
+|""",
+                  "picture3": """   
+x-------x
+|       |
+|       0
+|
+|
+|""",
+                  'picture4': """
+x-------x
+|       |
+|       0
+|       |
+|
+|""",
+                  'picture5': """ 
+x-------x
+|       |
+|       0
+|      /|\ 
+|
+|""",
+                  'picture6': """
+x-------x
+|       |
+|       0
+|      /|\ 
+|      /
+|""",
+                  'picture7': """ 
+x-------x
+|       |
+|       0
+|      /|\ 
+|      / \ 
+|"""}
+
+
+def hangman_art_fuc():
+    """this function showing the 'hangman' sketch
+    :return: the sketch.
+    """
+    return hangman_art
+
+
+def choose_word(file_pa, number_of_choice):
+    """this function defines to the player which word will be the secret word for guessing.
+    :param file_pa: File path to the secret's words.
+    :param number_of_choice: Word placement in the file path.
+    :type file_pa: str
+    :type number_of_choice: int
+    :return: tuple with two element
+    :rtype: tuple
+    """
+    file1 = file_pa.split(" ")
+    pose = (number_of_choice - 1) % len(file1)
+    secret_word1 = file1[pose]
+    return secret_word1
+
+
+def check_valid_input(guessing_letter, list_of_letters):
+    """this function will check if the letter is true so the letter will save in a new list.
+       :param guessing_letter: Represents the letter from the player.
+       :param list_of_letters: A list  containing the letters the player has guessed already.
+       :type guessing_letter: str.
+       :type list_of_letters: list.
+       :return: if the letter is valid.
+       :rtype: bool."""
+    if len(guessing_letter) == 1 and guessing_letter.isalpha() and guessing_letter not in list_of_letters:
+        list_of_letters.append(guessing_letter)
+        return True
+    else:
+        return False
+
+
+def try_update_letter_guessed(list_of_letters):
+    """the function add the new letter to the list or write an error if the letter already in the list.
+    :param guessing_letter: Represents the letter from the player.
+    :param list_of_letters: A list  containing the letters the player has guessed already.
+    :type guessing_letter: str.
+    :type list_of_letters: list.
+    :return if the letter is valid it will add to the list if invalid the letter will not add to the list
+    :rtype bool
+    """
+    separator = " -> "
+    new_list_of_letters = separator.join(sorted(list_of_letters))
+    print(f'X\n{new_list_of_letters}')
+
+    #     return False   # The letter is already used/not valid
+    # else:
+    #
+    #     return True    # New letter that are not in the secret word is added to the list
+
+
+def show_hidden_word(the_secret_word, list_of_letters):
+    """the function shows the player his progress in guessing the secret word.
+    :param the_secret_word: the string represents the secret word the player has to guess.
+    :param list_of_letters:the list contains the letters the player has guessed so far.
+    :type the_secret_word: str
+    :type list_of_letters: list
+    :return: string of the progress
+    :rtype: str."""
+    secret_word_string = ''
+    for letter in the_secret_word:
+        if letter in list_of_letters:
+            secret_word_string += letter + " "
+        else:
+            secret_word_string += "_ "
+    print(secret_word_string)
+
+
+def check_win(the_secret_word, list_of_letters):
+    """ the function checks if the player has guessed the secret word.
+    :return: If all the letters compose the secret word and included in the list old_letters that the user guessed
+    :rtype: bool."""
+    list_of_secret_word = []
+    list_of_secret_word[:0] = the_secret_word
+    list_of_letter_guessing = []
+    list_of_letter_guessing[:0] = list_of_letters
+    if collections.Counter(list_of_letter_guessing) == collections.Counter(list_of_secret_word):
+        print("WON")
+        return True
+    else:
+        return False
+
+
+def print_hangman(num_tries):
+    """this function is counting how many times the player tried
+    :param num_tries: how many times
+    :type num_tries: int
+    :return:
+    """
+    global HANGMAN_PHOTOS
+    if num_tries == 0:
+        print(HANGMAN_PHOTOS['picture1'])
+        pass
+    elif num_tries == 1:
+        print(HANGMAN_PHOTOS['picture2'])
+        pass
+    elif num_tries == 2:
+        print(HANGMAN_PHOTOS['picture3'])
+        pass
+    elif num_tries == 3:
+        print(HANGMAN_PHOTOS['picture4'])
+        pass
+    elif num_tries == 4:
+        print(HANGMAN_PHOTOS['picture5'])
+        pass
+    elif num_tries == 5:
+        print(HANGMAN_PHOTOS['picture6'])
+        pass
+    elif num_tries == 6:
+        print(HANGMAN_PHOTOS['picture7'])
+    return None
+
+
+def main():
+    num_of_tries = 0
+    max_tries = 6  # how many times the user can fail.
+    print(f'Welcome to the game Hangman\n{hangman_art_fuc()}')
+    file = input("Please enter a file path: ")
+    file_path = open(file, "r")
+    file_content = file_path.read()
+    index = int(input("Enter a number(represent the chosen secret word): "))
+    print(f"Let's start!\n{HANGMAN_PHOTOS['picture1']}")
+    chose_word = choose_word(file_content, index)
+    secret_word = str(chose_word)
+    len_sentence = len(secret_word)
+    string = int(len_sentence) * "_ "
+    print(string + '\n')
+    old_letters_guessed = []
+    while not check_win(secret_word, old_letters_guessed):
+        print(secret_word)
+        letter_guessed = input("Guess a letter: ").lower()
+        check_valid = check_valid_input(letter_guessed, old_letters_guessed)
+        if check_valid:
+            show_hidden_word(secret_word, old_letters_guessed)
+            if check_win(secret_word, old_letters_guessed):
+                file_path.close()
+                break
+            if letter_guessed not in secret_word and check_valid:
+                print(":(")
+                num_of_tries += 1
+                print_hangman(num_of_tries)
+
+                if num_of_tries == max_tries:
+                    print("Sorry, you FAILED")
+                    break
+        else:
+            try_update_letter_guessed(old_letters_guessed)
+
+
+if __name__ == "__main__":
+    main()
