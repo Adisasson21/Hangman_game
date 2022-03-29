@@ -1,3 +1,6 @@
+<div id="header" align="center">
+  <img src="https://media.giphy.com/media/M9gbBd9nbDrOTu1Mqx/giphy.gif" width="100"/>
+</div>
 # Hangman_game
 
 Hangman is a popular word guessing game where the player attempts to build a missing word by guessing one letter at a time.
