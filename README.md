@@ -1,5 +1,5 @@
 <div id="header" align="center">
-  <img src="https://media.giphy.com/media/ybQIv0CsYm1XY9A8Dm/giphy.gif" width="300"/>
+  <img src="https://media.giphy.com/media/ybQIv0CsYm1XY9A8Dm/giphy.gif" width="220"/>
 </div>
 # Hangman_game
 
